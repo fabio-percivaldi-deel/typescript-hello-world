@@ -1,0 +1,12 @@
+.idea
+.env
+.features
+data/*
+!data/scripts
+dist
+node_modules
+.DS_Store
+coverage
+results/html-reports
+.run
+.vscode

@@ -1,0 +1,11 @@
+.swagger-ui .topbar {
+  padding: 16px 0;
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+  margin-bottom: 0;
+}
+
+body {
+  margin: 0;
+}

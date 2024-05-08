@@ -1,0 +1,13 @@
+{
+  "SENTRY_SAMPLING": 0.25,
+  "DATABASE_POOL_SIZE": 5,
+  "DATABASE_POOL_TIMEOUT": 0,
+  "PORT": 3000,
+  "NODE_ENV": "development",
+  "STAGE": "dev",
+  "INTERNAL_SECRET": "INTERNAL_SECRET",
+  "EMPLOYMENT_URL": "http://employment",
+  "RABBITMQ_URL": "",
+  "RABBITMQ_QUEUE": "swagger-queue",
+  "UPLOAD_SERVICE_URL": "http://upload"
+}

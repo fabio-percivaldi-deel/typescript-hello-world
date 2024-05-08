@@ -1,0 +1,11 @@
+import { QueryParams, Validate } from '@letsdeel/employee-tribe-common';
+import { JsonController } from 'routing-controllers';
+import { Service } from 'typedi';
+import { <MODEL>Service } from '../../services/models/<MODEL>.service';
+
+@JsonController('/<MODEL>')
+@Service()
+export default class <MODEL>Controller {
+  constructor(private service: <MODEL>Service) {
+  }
+}

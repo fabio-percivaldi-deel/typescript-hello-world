@@ -1,0 +1,5 @@
+{
+  "watch": ["src"],
+  "ext": "ts,js,json",
+  "exec": "TS_NODE_FILES=true node -r dotenv/config -r ts-node/register -r @letsdeel/init --inspect=0.0.0.0:9230 src/server.ts"
+}

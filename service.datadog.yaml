@@ -1,0 +1,45 @@
+schema-version: v2.2
+dd-service: benefits
+team: benefits
+contacts:
+  - type: slack
+    name: "#alerts-benefits"
+    contact: https://letsdeel.slack.com/archives/C05KBJL8TBL
+application: benefits
+description: Benefits Service provides a comprehensive suite of benefit services to employees hired under PEO, EOR, GP, and US Payroll verticals.
+tier: tier 1
+lifecycle: production
+links:
+  - name: Source
+    type: repo
+    provider: github
+    url: https://github.com/letsdeel/benefits
+  - name: Helm chart
+    type: repo
+    provider: github
+    url: https://github.com/letsdeel/gitops-applications/tree/dev/charts/benefits
+tags:
+  - invocation:http
+---
+schema-version: v2.2
+dd-service: benefits-migration
+team: benefits
+contacts:
+  - type: slack
+    name: "#alerts-benefits"
+    contact: https://letsdeel.slack.com/archives/C05KBJL8TBL
+application: benefits
+description: Benefits Service provides a comprehensive suite of benefit services to employees hired under PEO, EOR, GP, and US Payroll verticals.
+tier: tier 1
+lifecycle: production
+links:
+  - name: Source
+    type: repo
+    provider: github
+    url: https://github.com/letsdeel/benefits
+  - name: Helm chart
+    type: repo
+    provider: github
+    url: https://github.com/letsdeel/gitops-applications/tree/dev/charts/benefits
+tags:
+  - invocation:migration

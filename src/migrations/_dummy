@@ -1,0 +1,13 @@
+import { MigrationFunc } from './index.js';
+
+/**
+ * Please follow best practices https://wiki.deel.network/en/deel-workspace/engineering/teams/database/postgres/DB-Best-Practices
+ */
+
+const migration: MigrationFunc = async ({ queryInterface, sequelize, Sequelize, schema }) => {
+  await sequelize.transaction(async transaction => {
+    //your migration here
+  });
+};
+
+export default migration;
