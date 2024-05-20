@@ -1,0 +1,4380 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Swagger Document Template - OpenAPI 3.0",
+      "termsOfService": "http://swagger.io/terms/",
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0.11"
+    },
+    "tags": [
+      {
+        "name": "Equity"
+      },
+      {
+        "name": "Equity Types"
+      },
+      {
+        "name": "Equity Grant Types"
+      },
+      {
+        "name": "Equity Files"
+      },
+      {
+        "name": "Equity Organizations Admin"
+      },
+      {
+        "name": "Equity Organizations Agreement"
+      },
+      {
+        "name": "Equity Enabled Profiles"
+      },
+      {
+        "name": "Equity Enabled Organizations"
+      },
+      {
+        "name": "Equity Backend For Frontend"
+      },
+      {
+        "name": "Equity Invoices Admin"
+      }
+    ],
+    "paths": {
+      "/equities": {
+        "post": {
+          "tags": [
+            "Equity"
+          ],
+          "summary": "create a new Equity entity",
+          "requestBody": {
+            "description": "create a new Equity entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "grantName",
+                    "equityTypeId"
+                  ],
+                  "properties": {
+                    "grantName": {
+                      "type": "string"
+                    },
+                    "equityTypeId": {
+                      "type": "string"
+                    },
+                    "equityGrantTypeId": {
+                      "type": "string"
+                    },
+                    "hrisProfileId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "contractId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "send the contractId only if hrisProfileId is not provided"
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "quantity": {
+                      "type": "number"
+                    },
+                    "grantDate": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "grantStatus": {
+                      "type": "string",
+                      "enum": [
+                        "PENDING_APPROVAL",
+                        "GRANTED"
+                      ]
+                    },
+                    "optionExpiration": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "exercisePrice": {
+                      "type": "number"
+                    },
+                    "valueCurrency": {
+                      "type": "string"
+                    },
+                    "exercisePriceCurrency": {
+                      "type": "string"
+                    },
+                    "vestingStartDate": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "vestingLength": {
+                      "type": "number"
+                    },
+                    "tranches": {
+                      "type": "number"
+                    },
+                    "cliffPeriod": {
+                      "type": "number"
+                    },
+                    "additionalGrantRequirementsAndRestrictions": {
+                      "type": "string"
+                    },
+                    "otherInformation": {
+                      "type": "string"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "originalFileName": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string",
+                            "enum": [
+                              "application/pdf",
+                              "image/jpg",
+                              "image/jpeg",
+                              "image/png",
+                              "image/heic",
+                              "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                              "text/html",
+                              "text/csv",
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              "application/vnd.ms-excel",
+                              "application/zip",
+                              "application/x-zip-compressed"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "successfully created"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "summary": "get list of equity",
+          "parameters": [
+            {
+              "name": "hrisProfileId",
+              "in": "query",
+              "description": "Public ID of Hris Profile",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "grantName": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "carta",
+                            "ledgy",
+                            "manual"
+                          ]
+                        },
+                        "value": {
+                          "type": "number"
+                        },
+                        "grantStatus": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/service_hub_listing": {
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "description": "Returns a list of equities for the service hub listing",
+          "parameters": [
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "description": "Pagination: number of items to return",
+              "schema": {"type": "integer", "default": 100, "maximum": 200}
+            },
+            {
+              "name": "offset",
+              "in": "query",
+              "required": false,
+              "description": "Pagination: number of items to skip",
+              "schema": {"type": "integer", "default": 0, "minimum": 0}
+            },
+            {
+              "name":"valueMin",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: minimum for the 'value' field",
+              "schema": {"type": "number", "minimum": 0}
+            },
+            {
+              "name":"valueMax",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: maximum for the 'value' field",
+              "schema": {"type": "number", "minimum": 0, "maximum": 9999999999999}
+            },
+            {
+              "name":"quantityMin",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: minimum for the 'quantity' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name":"quantityMax",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: maximum for the 'quantity' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name": "exercisePriceMin",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: minimum for the 'exercisePrice' field",
+              "schema": {"type": "number", "minimum": 0}
+            },
+            {
+              "name": "exercisePriceMax",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'exercisePrice' field",
+              "schema": {"type": "number", "minimum": 0, "maximum": 9999999999999}
+            },
+            {
+              "name":"vestingLengthMin",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: minimum for the 'vestingLength' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name":"vestingLengthMax",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: maximum for the 'vestingLength' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name":"vestedQuantityMin",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: minimum for the 'vestedQuantity' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name":"vestedQuantityMax",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: maximum for the 'vestedQuantity' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name":"cliffPeriodMin",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: minimum for the 'cliffPeriod' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name":"cliffPeriodMax",
+              "in":"query",
+              "required": false,
+              "description": "Filtering: maximum for the 'cliffPeriod' field",
+              "schema": {"type": "integer", "minimum": 0}
+            },
+            {
+              "name": "grantDateFrom",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'grantDate' field",
+              "schema": {"type": "string", "format": "date", "example": "2021-01-01"}
+            },
+            {
+              "name": "grantDateTo",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'grantDate' field",
+              "schema": {"type": "string", "format": "date", "example": "2022-01-01"}
+            },
+            {
+              "name": "optionExpirationFrom",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'optionExpiration' field",
+              "schema": {"type": "string", "format": "date", "example": "2021-01-01"}
+            },
+            {
+              "name": "optionExpirationTo",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'optionExpiration' field",
+              "schema": {"type": "string", "format": "date", "example": "2022-01-01"}
+            },
+            {
+              "name": "vestingStartDateFrom",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'vestingStartDate' field",
+              "schema": {"type": "string", "format": "date", "example": "2021-01-01"}
+            },
+            {
+              "name": "vestingStartDateTo",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: maximum for the 'vestingStartDate' field",
+              "schema": {"type": "string", "format": "date", "example": "2022-01-01"}
+            },
+            {
+              "name": "grantStatus",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'grantStatus' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {
+                "type": "string", "enum": ["PENDING_APPROVAL", "GRANTED"]}
+              }
+            },
+            {
+              "name": "valueCurrency",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'valueCurrency' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {
+                "type": "string", "format": "currency"
+              }}
+            },
+            {
+              "name": "exercisePriceCurrency",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'exercisePriceCurrency' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {
+                "type": "string", "format": "currency"
+              }}
+            },
+            {
+              "name": "source",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'source' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {
+                "type": "string", "enum": ["CARTA", "LEDGY", "MANUAL"]}
+              }
+            },
+            {
+              "name": "equityType",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'equityType' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"type": "string"}}
+            },
+            {
+              "name": "equityGrantType",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'equityGrantType' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"type": "string"}}
+            },
+            {
+              "name": "hiringType",
+              "in": "query",
+              "required": false,
+              "description": "Filtering: values for the 'hiringType' field",
+              "schema": {"type": "array", "minItems": 1, "maxItems": 100, "items": {
+                "type": "string", "enum": ["contractor", "eor", "peo", "hris_direct_employee", "direct_employee", "contractor_outside_deel"]
+              }}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": ["items"],
+                    "properties": {
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {"type": "string"},
+                            "grantName": {"type": "string"},
+                            "equityType": {"type": "string"},
+                            "equityGrantType": {"type": "string"},
+                            "value": {"type": "string"},
+                            "quantity": {"type": "number"},
+                            "grantDate": {"type": "string", "format": "date"},
+                            "grantStatus": {
+                              "type": "string",
+                              "enum": ["PENDING_APPROVAL", "GRANTED"]
+                            },
+                            "optionExpiration": {"type": "string", "format": "date"},
+                            "exercisePrice": {"type": "string"},
+                            "valueCurrency": {"type": "string"},
+                            "exercisePriceCurrency": {"type": "string"},
+                            "vestingStartDate": {"type": "string", "format": "date"},
+                            "vestingLength": {"type": "number"},
+                            "cliffPeriod": {"type": "number"},
+                            "tranches": {"type": "number"},
+                            "additionalGrantRequirementsAndRestrictions": {"type": "string"},
+                            "source": {
+                              "type": "string",
+                              "enum": ["CARTA", "LEDGY", "MANUAL"]
+                            },
+                            "vestedQuantity": {"type": "number"},
+                            "hrisProfile": {
+                              "type": "object",
+                              "properties": {
+                                "id": {"type": "string"},
+                                "picUrl": {"type": "string", "format": "url"},
+                                "firstName": {"type": "string"},
+                                "middleName": {"type": "string"},
+                                "lastName": {"type": "string"},
+                                "email": {"type": "string"},
+                                "jobTitle": {"type": "string"},
+                                "hiringType": {"type": "string"},
+                                "isUnderRisk": {"type": "boolean"}
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "total": {
+                        "type": "number",
+                        "description": "Total number of items. Returned only when the offset is 0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/service_hub_listing/filter_values": {
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "description": "Returns a list of filter values for the service hub listing",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": ["status", "source", "hiringType", "equityType", "equityGrantType", "valueCurrency", "exercisePriceCurrency"],
+                    "properties": {
+                      "status": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": ["PENDING_APPROVAL", "GRANTED"]
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": ["PENDING APPROVAL", "GRANTED"]
+                            }
+                          }
+                        }
+                      },
+                      "source": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": ["CARTA", "LEDGY", "MANUAL"]
+                            },
+                            "label": {
+                              "type": "string",
+                              "enum": ["Carta", "Ledgy", "Manual"]
+                            }
+                          }
+                        }
+                      },
+                      "hiringType": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {"type": "string"},
+                            "label": {"type": "string"}
+                          }
+                        }
+                      },
+                      "equityType": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {"type": "string"},
+                            "label": {"type": "string"}
+                          }
+                        }
+                      },
+                      "equityGrantType": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {"type": "string"},
+                            "label": {"type": "string"}
+                          }
+                        }
+                      },
+                      "valueCurrency": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {"type": "string"},
+                            "label": {"type": "string"}
+                          }
+                        }
+                      },
+                      "exercisePriceCurrency": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {"type": "string"},
+                            "label": {"type": "string"}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/under_risk_profiles": {
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "description": "Returns a list of profiles that have equities but are not onboarded to Equity Service",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "isOrganizationOnboarded": {
+                        "type": "boolean"
+                      },
+                      "employees": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "grantName": {
+                              "type": "string"
+                            },
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "middleName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "picUrl": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/connections": {
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "responses": {
+            "200": {
+              "description": "list of connections for a specific org extracted from the token of the caller",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "connectionId": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        },
+                        "schemaId": {
+                          "type": "string"
+                        },
+                        "organizationId": {
+                          "type": "string"
+                        },
+                        "logoUrl": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/{equityId}/files/{fileId}": {
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "summary": "get file url of equity",
+          "description": "this needs to be used after the equity is created",
+          "parameters": [
+            {
+              "name": "equityId",
+              "in": "path",
+              "description": "Public ID of Equity",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "fileId",
+              "in": "path",
+              "description": "Public ID of File",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/upload_preview": {
+        "get": {
+          "tags": [
+            "Equity"
+          ],
+          "summary": "get file preview url before equity is created",
+          "description": "this needs to be used before the equity entity is created",
+          "parameters": [
+            {
+              "name": "key",
+              "in": "query",
+              "description": "S3 Key of uploaded file",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/{equityId}": {
+        "get": {
+          "parameters": [
+            {
+              "name": "equityId",
+              "in": "path",
+              "description": "ID of Equity",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "contractId",
+              "in": "query",
+              "description": "ID of Contract",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity"
+          ],
+          "summary": "get equity detail",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "grantName": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string",
+                        "enum": [
+                          "Carta",
+                          "Ledgy",
+                          "Manual"
+                        ]
+                      },
+                      "equityType": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "equityGrantType": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "value": {
+                        "type": "number"
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "grantDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "grantStatus": {
+                        "type": "string"
+                      },
+                      "optionExpiration": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "exercisePrice": {
+                        "type": "number"
+                      },
+                      "valueCurrency": {
+                        "type": "string"
+                      },
+                      "exercisePriceCurrency": {
+                        "type": "string"
+                      },
+                      "vestingStartDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "vestingLength": {
+                        "type": "number"
+                      },
+                      "tranches": {
+                        "type": "number"
+                      },
+                      "cliffPeriod": {
+                        "type": "number"
+                      },
+                      "additionalGrantRequirementsAndRestrictions": {
+                        "type": "string"
+                      },
+                      "otherInformation": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "parameters": [
+            {
+              "name": "equityId",
+              "in": "path",
+              "description": "ID of Equity Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity"
+          ],
+          "summary": "update an existing Equity entity",
+          "requestBody": {
+            "description": "update an existing Equity entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "grantName",
+                    "hrisProfileId",
+                    "equityGrantTypeId",
+                    "equityTypeId"
+                  ],
+                  "properties": {
+                    "grantName": {
+                      "type": "string"
+                    },
+                    "equityTypeId": {
+                      "type": "string"
+                    },
+                    "equityGrantTypeId": {
+                      "type": "string"
+                    },
+                    "hrisProfileId": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "quantity": {
+                      "type": "number"
+                    },
+                    "grantDate": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "grantStatus": {
+                      "type": "string",
+                      "enum": [
+                        "PENDING_APPROVAL",
+                        "GRANTED"
+                      ]
+                    },
+                    "optionExpiration": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "exercisePrice": {
+                      "type": "number"
+                    },
+                    "valueCurrency": {
+                      "type": "string"
+                    },
+                    "exercisePriceCurrency": {
+                      "type": "string"
+                    },
+                    "vestingStartDate": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "vestingLength": {
+                      "type": "number"
+                    },
+                    "tranches": {
+                      "type": "number"
+                    },
+                    "cliffPeriod": {
+                      "type": "number"
+                    },
+                    "additionalGrantRequirementsAndRestrictions": {
+                      "type": "string"
+                    },
+                    "otherInformation": {
+                      "type": "string"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "originalFileName": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string",
+                            "enum": [
+                              "application/pdf",
+                              "image/jpg",
+                              "image/jpeg",
+                              "image/png",
+                              "image/heic",
+                              "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                              "text/html",
+                              "text/csv",
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              "application/vnd.ms-excel",
+                              "application/zip",
+                              "application/x-zip-compressed"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "successfully created"
+            }
+          }
+        },
+        "delete": {
+          "parameters": [
+            {
+              "name": "equityId",
+              "in": "path",
+              "description": "ID of Equity Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity"
+          ],
+          "summary": "delete an existing equity",
+          "responses": {
+            "204": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+      "/equities/equity_type": {
+        "get": {
+          "tags": [
+            "Equity Types"
+          ],
+          "summary": "get list of equity type",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "equityGrantTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "public id of equity type"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Equity Types"
+          ],
+          "summary": "create an equity type",
+          "requestBody": {
+            "description": "create an equity type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        }
+      },
+      "/equities/equity_type/{equityTypeId}": {
+        "patch": {
+          "tags": [
+            "Equity Types"
+          ],
+          "parameters": [
+            {
+              "name": "equityTypeId",
+              "in": "path",
+              "description": "ID of Equity Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "update an equity type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Equity Types"
+          ],
+          "parameters": [
+            {
+              "name": "equityTypeId",
+              "in": "path",
+              "description": "ID of Equity Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        }
+      },
+      "/equities/equity_files/{equityId}": {
+        "post": {
+          "tags": [
+            "Equity Files"
+          ],
+          "parameters": [
+            {
+              "name": "equityId",
+              "in": "path",
+              "description": "ID of Equity",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "add new files to an equity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "originalFileName": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string",
+                            "enum": [
+                              "application/pdf",
+                              "image/jpg",
+                              "image/jpeg",
+                              "image/png",
+                              "image/heic",
+                              "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                              "text/html",
+                              "text/csv",
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              "application/vnd.ms-excel",
+                              "application/zip",
+                              "application/x-zip-compressed"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        }
+      },
+      "/equities/equity_files/{equityId}/{fileId}": {
+        "delete": {
+          "tags": [
+            "Equity Files"
+          ],
+          "parameters": [
+            {
+              "name": "equityId",
+              "in": "path",
+              "description": "ID of Equity",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "fileId",
+              "in": "path",
+              "description": "ID of File",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        }
+      },
+      "/equities/equity_grant_type": {
+        "get": {
+          "tags": [
+            "Equity Grant Types"
+          ],
+          "summary": "get list of equity type",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "equityGrantTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "public id of equity type"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Equity Grant Types"
+          ],
+          "summary": "create an equity type",
+          "requestBody": {
+            "description": "create an equity type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        }
+      },
+      "/equities/equity_grant_type/{equityTypeId}": {
+        "patch": {
+          "tags": [
+            "Equity Grant Types"
+          ],
+          "parameters": [
+            {
+              "name": "equityTypeId",
+              "in": "path",
+              "description": "ID of Equity Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "update an equity type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Equity Grant Types"
+          ],
+          "parameters": [
+            {
+              "name": "equityTypeId",
+              "in": "path",
+              "description": "ID of Equity Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "updated was successfull"
+            }
+          }
+        }
+      },
+      "/equities/enabled_profiles/{hrisProfileId}": {
+        "get": {
+          "parameters": [
+            {
+              "name": "hrisProfileId",
+              "in": "path",
+              "description": "ID of Hris Profile",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Enabled Profiles"
+          ],
+          "description": "Return if a user is eor and if it is enabled to equity service",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "isEor": {
+                        "type": "boolean"
+                      },
+                      "isShield": {
+                        "type": "boolean"
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      },
+                      "isOrganizationOnboardedAsDeelGrant": {
+                        "type": "boolean"
+                      },
+                      "isOrganizationOnboardedAsDirectGrant": {
+                        "type": "boolean"
+                      },
+                      "isEorProfileOnboardedAsDeelGrant": {
+                        "type": "boolean"
+                      },
+                      "isEorProfileOnboardedAsDirectGrant": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/enabled_profiles/{organizationId}": {
+        "patch": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Enabled Profiles"
+          ],
+          "description": "Enable or disable profiles for a given organization",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hrisProfiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "enabledAsType": {
+                            "type": "string",
+                            "enum": [
+                              "DEEL_GRANT",
+                              "DIRECT_GRANT"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "isEor": {
+                        "type": "boolean"
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations": {
+        "get": {
+          "parameters": [
+            {
+              "name": "query",
+              "in": "query",
+              "description": "Name or id of the organization",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "isDeelGrantEnabled",
+              "in": "query",
+              "description": "filter only for deel grant onboarded organization",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "isDirectGrantEnabled",
+              "in": "query",
+              "description": "filter only for direct grant onboarded organization",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "Return a list of organization",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "cursors": {
+                        "type": "string"
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "active": {
+                              "type": "boolean"
+                            },
+                            "enabledEorsAsDeelGrant": {
+                              "type": "integer"
+                            },
+                            "enabledEorsAsDirectGrant": {
+                              "type": "integer"
+                            },
+                            "isDeelGrantEnabled": {
+                              "type": "boolean"
+                            },
+                            "isDirectGrantEnabled": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}": {
+        "get": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of the organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "Return detail of organization",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "generalInfo": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "accountCustomerTier": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "accountOwnerName": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "accountCsmName": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "equityEnabledEorCount": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "msaDocument": {
+                        "type": "object",
+                        "properties": {
+                          "filename": {
+                            "type": "string"
+                          },
+                          "effectiveDate": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "msaId": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        }
+                      },
+                      "uploadedDocuments": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "filename": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "equityIntegrations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "connectionId": {
+                              "type": "string"
+                            },
+                            "slug": {
+                              "type": "string"
+                            },
+                            "organizationId": {
+                              "type": "string"
+                            },
+                            "logoUrl": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "equityEnabledOrganization": {
+                        "type": "object",
+                        "properties": {
+                          "enabledAsDeelGrant": {
+                            "type": "boolean"
+                          },
+                          "enabledAsDirectGrant": {
+                            "type": "boolean"
+                          },
+                          "hasUsedStockOptions": {
+                            "type": "boolean"
+                          },
+                          "hrisProfileIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "enabled": {
+                                  "type": "boolean"
+                                },
+                                "enabledAsType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "DEEL_GRANT",
+                                    "DIRECT_GRANT"
+                                  ]
+                                },
+                                "enabledAt": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "disabledAt": {
+                                  "type": "string",
+                                  "format": "date"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/admin/equities/enabled_organizations/{organizationId}": {
+        "get": {
+          "tags": [
+            "Equity Enabled Organizations"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of the organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Get an enable organization",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "enabledAsDeelGrant": {
+                        "type": "boolean"
+                      },
+                      "enabledAsDirectGrant": {
+                        "type": "boolean"
+                      },
+                      "enabledAsDeelGrantDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "disabledAsDeelGrantDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "enabledAsDirectGrantDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "disabledAsDirectGrantDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "hrisProfiles": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "enabled": {
+                              "type": "boolean"
+                            },
+                            "enabledAt": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "disabledAt": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "enabledAsType": {
+                              "type": "string",
+                              "enum": [
+                                "DEEL_GRANT",
+                                "DIRECT_GRANT"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/enabled_organizations/{organizationId}": {
+        "get": {
+          "tags": [
+            "Equity Enabled Organizations"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of the organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Get an enable organization",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "hasUsedStockOptions": {
+                        "type": "boolean"
+                      },
+                      "enabledAsDeelGrant": {
+                        "type": "boolean"
+                      },
+                      "enabledAsDirectGrant": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/upsert_organization_and_profiles": {
+        "patch": {
+          "tags": [
+            "Equity Backend For Frontend"
+          ],
+          "description": "Enable an organization for a grant type or disable it together with all connected profiles of the same type",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "organizationId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "enabledAsDeelGrant": {
+                      "type": "boolean"
+                    },
+                    "enabledAsDirectGrant": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+      "/admin/equities/upload_agreements_and_perform_activations": {
+        "post": {
+          "tags": [
+            "Equity Backend For Frontend"
+          ],
+          "description": "Enable an organization for a grant type or disable it together with all connected profiles of the same type",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "organizationId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "agreements": {
+                      "$ref": "#/components/schemas/agreements"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+      "/equities/sign_agreements_and_perform_activations": {
+        "post": {
+          "tags": [
+            "Equity Backend For Frontend"
+          ],
+          "description": "Enable an organization for a grant type or disable it together with all connected profiles of the same type",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "organizationId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "clientSignature": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/notes": {
+        "post": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "note": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "create a new Equity Organization Note",
+          "responses": {
+            "201": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "return list of notes",
+          "responses": {
+            "201": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "description": "email"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/notes/{noteId}": {
+        "patch": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "noteId",
+              "in": "path",
+              "description": "ID of Note",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "note": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "update an existing Equity Organization Note",
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        },
+        "delete": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "noteId",
+              "in": "path",
+              "description": "ID of Note",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "delete an existing Equity Organization Note",
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/files": {
+        "post": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "originalFilename": {
+                            "type": "string"
+                          },
+                          "contentType": {
+                            "type": "string",
+                            "enum": [
+                              "application/pdf",
+                              "image/jpg",
+                              "image/jpeg",
+                              "image/png",
+                              "image/heic",
+                              "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                              "text/html",
+                              "text/csv",
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.shee",
+                              "application/vnd.ms-excel"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "create a new Equity Organization File",
+          "responses": {
+            "201": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/msa_file/{msaId}": {
+        "get": {
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "Get an existing Organization MSA File",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "msaId",
+              "in": "path",
+              "description": "ID of MSA File",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/files/{fileId}": {
+        "get": {
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "Get an existing Equity Organization File",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "fileId",
+              "in": "path",
+              "description": "ID of File",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "file content type"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "Delete an existing Equity Organization File",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "fileId",
+              "in": "path",
+              "description": "ID of File",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/upload_preview": {
+        "get": {
+          "tags": [
+            "Equity Organizations Admin"
+          ],
+          "description": "Get uploaded file preview url",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "key",
+              "in": "query",
+              "description": "Uploaded file key",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/deel_grant_addendum": {
+        "post": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "legalEntityId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "dateOfMsa": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "sectionNumber": {
+                      "type": "string",
+                      "example": "6.6",
+                      "pattern": "/^([1-9][0-9]*)(\\.[1-9][0-9]*){0,2}$/",
+                      "description": "Section number of the agreement. E.g. 1 or 1.2 or 1.2.3 but not 1.2.3.4"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "return an existing task or create a new one",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/hashKey"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/direct_grant_addendum": {
+        "post": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "legalEntityId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "dateOfMsa": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "sectionNumber": {
+                      "type": "string",
+                      "example": "6.6",
+                      "pattern": "/^([1-9][0-9]*)(\\.[1-9][0-9]*){0,2}$/",
+                      "description": "Section number of the agreement. E.g. 1 or 1.2 or 1.2.3 but not 1.2.3.4"
+                    },
+                    "hrisProfileIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "return an existing task or create a new one",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/hashKey"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/eor_letter": {
+        "post": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "legalEntityId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "hrisProfileIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "return an existing task or create a new one",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/hashKey"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/exhibit_letter": {
+        "post": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hrisProfileIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    },
+                    "exhibitLetter": {
+                      "type": "string"
+                    },
+                    "pricePerEor": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "return an existing task or create a new one",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/hashKey"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/service_agreement": {
+        "post": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dateOfMsa": {
+                      "type": "string",
+                      "format": "date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "return an existing task or create a new one",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/hashKey"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/used_exhibit_letters": {
+        "get": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "responses": {
+            "200": {
+              "description": "Get list of used exhibit letters",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "A",
+                        "B",
+                        "C",
+                        "D",
+                        "E",
+                        "F",
+                        "G",
+                        "H",
+                        "I",
+                        "J",
+                        "K",
+                        "L",
+                        "M",
+                        "N",
+                        "O",
+                        "P",
+                        "Q",
+                        "R",
+                        "S",
+                        "T",
+                        "U",
+                        "V",
+                        "W",
+                        "X",
+                        "Y",
+                        "Z"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/file_generation_tasks/{hashKey}": {
+        "get": {
+          "parameters": [
+            {
+              "name": "hashKey",
+              "in": "path",
+              "description": "HashKey generate by the POST command for generating file",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "responses": {
+            "200": {
+              "description": "task associated to hashKey is returned",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "PENDING",
+                          "IN_PROGRESS",
+                          "COMPLETED",
+                          "FAILED"
+                        ]
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/agreements": {
+        "post": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "description": "Upload agreement files with metadata",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful operation"
+            },
+            "400": {
+              "description": "client error"
+            },
+            "404": {
+              "description": "organization not found"
+            }
+          },
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/agreements"
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "responses": {
+            "200": {
+              "description": "return the list of agreements",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "signedAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "signerId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "pricePerEor": {
+                        "type": "string"
+                      },
+                      "sectionNumber": {
+                        "type": "string"
+                      },
+                      "exhibitLetter": {
+                        "type": "string"
+                      },
+                      "dateOfMsa": {
+                        "type": "string"
+                      },
+                      "employees": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "object",
+                              "properties": {
+                                "country": {
+                                  "type": "string"
+                                },
+                                "state": {
+                                  "type": "string"
+                                },
+                                "province": {
+                                  "type": "string"
+                                },
+                                "city": {
+                                  "type": "string"
+                                },
+                                "street": {
+                                  "type": "string"
+                                },
+                                "zip": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "fileId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "responses": {
+            "200": {
+              "description": "Delete all the pending signature or rejected agreements"
+            }
+          }
+        }
+      },
+      "/admin/equities/organization/{organizationId}/agreements/{agreementId}": {
+        "delete": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "agreementId",
+              "in": "path",
+              "description": "ID of Agreement",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "responses": {
+            "200": {
+              "description": "Delete the specific agreement - only pre signed can be delete"
+            }
+          }
+        }
+      },
+      "/equities/organizations/{organizationId}/agreements": {
+        "get": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "status",
+              "in": "query",
+              "description": "Status of the agreements to return",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "PENDING_SIGNATURE",
+                  "SIGNED",
+                  "REJECTED"
+                ]
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "responses": {
+            "200": {
+              "description": "return the list of agreements",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "signedAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "signedBy": {
+                        "type": "string",
+                        "description": "email of the signer",
+                        "format": "email"
+                      },
+                      "pricePerEor": {
+                        "type": "string"
+                      },
+                      "sectionNumber": {
+                        "type": "string"
+                      },
+                      "exhibitLetter": {
+                        "type": "string"
+                      },
+                      "dateOfMsa": {
+                        "type": "string"
+                      },
+                      "employees": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "object",
+                              "properties": {
+                                "country": {
+                                  "type": "string"
+                                },
+                                "state": {
+                                  "type": "string"
+                                },
+                                "province": {
+                                  "type": "string"
+                                },
+                                "city": {
+                                  "type": "string"
+                                },
+                                "street": {
+                                  "type": "string"
+                                },
+                                "zip": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "fileId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "legalEntityName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/organizations/{organizationId}/agreements/reject": {
+        "post": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rejectionReason": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "return the list of agreements",
+              "content": {}
+            }
+          }
+        }
+      },
+      "/equities/organizations/{organizationId}/agreements/sign": {
+        "post": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "description": "Sign all agreement assigned to client in PENDING_SIGNATURE status",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientSignature": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "successfully signed agreements"
+            },
+            "404": {
+              "description": "no agreement to sign are found"
+            }
+          }
+        }
+      },
+      "/equities/organizations/{organizationId}/agreements/download": {
+        "get": {
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "description": "Download all signed agreements",
+          "responses": {
+            "200": {
+              "description": "a response with a URL to download a zip archive of documents",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/agreements/{agreementId}/file": {
+        "get": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "description": "Get agreement file url",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "agreementId",
+              "in": "path",
+              "description": "ID of the Agreement",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/equities/organizations/{organizationId}/agreements/{agreementId}/file": {
+        "get": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "description": "Get agreement file url",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "agreementId",
+              "in": "path",
+              "description": "ID of the Agreement",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/admin/equities/organizations/{organizationId}/agreements/preview": {
+        "get": {
+          "tags": [
+            "Equity Organizations Agreement"
+          ],
+          "description": "Get agreement file preview",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "in": "path",
+              "description": "ID of Organization",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "SERVICE_AGREEMENT",
+                  "DEEL_GRANT_ADDENDUM",
+                  "EXHIBIT_LETTER",
+                  "EOR_NOTICE_LETTER"
+                ]
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "createdAsType",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "PRE_SIGNED",
+                  "CUSTOM",
+                  "STANDARD"
+                ]
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "legalEntityId",
+              "description": "required for DEEL_GRANT_ADDENDUM",
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "sectionNumber",
+              "description": "required for DEEL_GRANT_ADDENDUM",
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "dateOfMsa",
+              "description": "required for DEEL_GRANT_ADDENDUM and SERVICE_AGREEMENT",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "exhibitLetter",
+              "description": "required for EXHIBIT_LETTER",
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "pricePerEor",
+              "description": "required for EXHIBIT_LETTER",
+              "schema": {
+                "type": "string"
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "hrisProfileIds",
+              "description": "required for EXHIBIT_LETTER",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "in": "query",
+              "required": false
+            },
+            {
+              "name": "signerId",
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "in": "query",
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "client error"
+            }
+          }
+        }
+      },
+      "/admin/equities/invoices": {
+        "get": {
+          "tags": [
+            "Equity Invoices Admin"
+          ],
+          "description": "Return a list of invoices",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "PENDING",
+                          "COMPLETED",
+                          "FAILED",
+                          "IN_PROGRESS"
+                        ]
+                      },
+                      "invoicePeriod": {
+                        "type": "string"
+                      },
+                      "totalAmount": {
+                        "type": "string"
+                      },
+                      "uploadedAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "uploaderEmail": {
+                        "type": "string"
+                      },
+                      "uploaderName": {
+                        "type": "string"
+                      },
+                      "fileId": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/invoices/validate": {
+        "get": {
+          "tags": [
+            "Equity Invoices Admin"
+          ],
+          "parameters": [
+            {
+              "name": "key",
+              "in": "query",
+              "description": "S3 Key of uploaded file to validate",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Validate a csv file, in case of error a list of them is returned",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "valid": {
+                        "type": "boolean"
+                      },
+                      "totalAmount": {
+                        "type": "number"
+                      },
+                      "errors": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "details": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "value": {},
+                                  "row": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/invoices/{taskId}/file": {
+        "get": {
+          "tags": [
+            "Equity Invoices Admin"
+          ],
+          "parameters": [
+            {
+              "name": "taskId",
+              "in": "path",
+              "description": "ID of the invoice task returned by invoices list",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Return the generated csv file with the invoices id",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/equities/invoices/generate": {
+        "post": {
+          "tags": [
+            "Equity Invoices Admin"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "S3 Key of uploaded file to generate invoices"
+                    },
+                    "organizationId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "invoicePeriod": {
+                      "type": "string",
+                      "description": "Invoice period in format YYYY-MM"
+                    },
+                    "originalFilename": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": "Validate a csv file, in case of error a list of them is returned",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/exercise_requests": {
+        "get": {
+          "tags": [
+            "Equity Exercise Request"
+          ],
+          "description": "Return list of exercise request for a specific employee",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "calculatedWithholdingAmount": {
+                          "type": "number"
+                        },
+                        "calculatedWithholdingAmountCurrencyCode": {
+                          "type": "string"
+                        },
+                        "calculationExpirationTime": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/equities/exercise_requests/{exerciseRequestId}/approve": {
+        "patch": {
+          "tags": [
+            "Equity Exercise Request"
+          ],
+          "parameters": [
+            {
+              "name": "exerciseRequestId",
+              "in": "path",
+              "description": "ID of the exercise request",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Approve the calculation of tax for the exercise request",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {}
+            }
+          }
+        }
+      },
+      "/equities/exercise_requests/{exerciseRequestId}/reject": {
+        "patch": {
+          "tags": [
+            "Equity Exercise Request"
+          ],
+          "parameters": [
+            {
+              "name": "exerciseRequestId",
+              "in": "path",
+              "description": "ID of the exercise request",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Reject the calculation of tax for the exercise request",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {}
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "pdfFile": {
+          "type": "object",
+          "required": [
+            "key",
+            "originalFilename",
+            "contentType"
+          ],
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "originalFilename": {
+              "type": "string"
+            },
+            "contentType": {
+              "type": "string",
+              "enum": [
+                "application/pdf"
+              ]
+            }
+          }
+        },
+        "hashKey": {
+          "type": "object",
+          "properties": {
+            "hashKey": {
+              "type": "string"
+            }
+          }
+        },
+        "agreements": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "SERVICE_AGREEMENT"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "PRE_SIGNED"
+                    ]
+                  },
+                  "signedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "signedAt",
+                  "file"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DEEL_GRANT_ADDENDUM"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "PRE_SIGNED"
+                    ]
+                  },
+                  "signedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "signedAt",
+                  "file"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DIRECT_GRANT_ADDENDUM"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "PRE_SIGNED"
+                    ]
+                  },
+                  "signedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "signedAt",
+                  "file",
+                  "hrisProfileIds"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "EXHIBIT_LETTER"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "PRE_SIGNED"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "signedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "exhibitLetter": {
+                    "type": "string",
+                    "maxLength": 1
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "file",
+                  "signedAt",
+                  "exhibitLetter",
+                  "hrisProfileIds"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "EOR_NOTICE_LETTER"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "PRE_SIGNED"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "signedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "file",
+                  "signedAt",
+                  "hrisProfileIds"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "SERVICE_AGREEMENT"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "CUSTOM"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "file",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DEEL_GRANT_ADDENDUM"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "CUSTOM"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "file",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DIRECT_GRANT_ADDENDUM"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "CUSTOM"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "file",
+                  "hrisProfileIds",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "EXHIBIT_LETTER"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "CUSTOM"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "exhibitLetter": {
+                    "type": "string",
+                    "maxLength": 1
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid",
+                      "minItems": 1
+                    }
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "file",
+                  "exhibitLetter",
+                  "hrisProfileIds",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "SERVICE_AGREEMENT"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "STANDARD"
+                    ]
+                  },
+                  "dateOfMsa": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "dateOfMsa",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "EXHIBIT_LETTER"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "STANDARD"
+                    ]
+                  },
+                  "exhibitLetter": {
+                    "type": "string"
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "pricePerEor": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "exhibitLetter",
+                  "hrisProfileIds",
+                  "pricePerEor",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DEEL_GRANT_ADDENDUM"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "STANDARD"
+                    ]
+                  },
+                  "legalEntityId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "dateOfMsa": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "sectionNumber": {
+                    "type": "string"
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "legalEntityId",
+                  "dateOfMsa",
+                  "sectionNumber",
+                  "signerId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "DIRECT_GRANT_ADDENDUM"
+                    ]
+                  },
+                  "createdAsType": {
+                    "type": "string",
+                    "enum": [
+                      "STANDARD"
+                    ]
+                  },
+                  "file": {
+                    "$ref": "#/components/schemas/pdfFile"
+                  },
+                  "hrisProfileIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "signerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "sectionNumber": {
+                    "type": "string"
+                  },
+                  "legalEntityId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "dateOfMsa": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "type",
+                  "createdAsType",
+                  "legalEntityId",
+                  "dateOfMsa",
+                  "sectionNumber",
+                  "signerId",
+                  "file",
+                  "hrisProfileIds"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+  
