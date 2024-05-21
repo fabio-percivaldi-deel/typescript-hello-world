@@ -1,5 +1,5 @@
 {
-  "name": "swagger-service",
+  "name": "swagger",
   "version": "1.0.0",
   "description": "Project exposing swaggers file through swagger UI",
   "engines": {
@@ -40,7 +40,6 @@
   "dependencies": {
     "@abitia/zod-dto": "^0.4.0",
     "@apidevtools/swagger-cli": "^4.0.4",
-    "@faker-js/faker": "^8.3.1",
     "@letsdeel/employee-tribe-common": "^1.67.2",
     "@letsdeel/init": "^1.26.1",
     "@letsdeel/nats-lib": "^1.4.0",
@@ -85,6 +84,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@swc/cli": "^0.3.12",
     "@swc/core": "^1.5.3",
     "@swc/helpers": "^0.5.11",

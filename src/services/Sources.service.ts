@@ -1,6 +1,8 @@
 import { Service } from 'typedi';
 import Config from './config/Config.service';
 import SourcesRepository from '@repositories/Sources.repository';
+import { NotFoundError } from 'routing-controllers';
+
 @Service()
 export class SourcesService {
   constructor(

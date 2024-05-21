@@ -1,0 +1,62 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "html.format.indentHandlebars": true,
+  "html.format.maxPreserveNewLines": 0,
+  "files.exclude": {
+    "admin/*": true
+  },
+  "search.exclude": {
+    "admin/*": true,
+    "results/*": true
+  },
+  "[handlebars]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "editor.formatOnSave": true,
+  "prettier.disableLanguages": ["yaml", "markdown"],
+  "conventionalCommits.scopes": ["CD"],
+  "jest.jestCommandLine": "npm test --",
+  "jest.autoRun": "off",
+  "cSpell.words": [
+    "Amplemarket",
+    "ASHBYHQ",
+    "BAMBOOHR",
+    "bignumber",
+    "deduped",
+    "Deel",
+    "EORSOW",
+    "HOFY",
+    "hris",
+    "HRIS",
+    "idempotency",
+    "jetstream",
+    "Leandro",
+    "letsdeel",
+    "NATS",
+    "ndas",
+    "offboarding",
+    "offcycle",
+    "payg",
+    "PAYGROUP",
+    "safetywing",
+    "ssot",
+    "unenrollment",
+    "unisure",
+    "upselling",
+    "WEWORK",
+    "zendesk"
+  ],
+  "javascript.preferences.autoImportFileExcludePatterns": ["expect"],
+  "git-blame.gitWebUrl": "",
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

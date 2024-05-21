@@ -10,6 +10,7 @@ import { Server } from 'http';
 import path from 'path';
 import { useContainer, useExpressServer } from 'routing-controllers';
 import { Container, Service } from 'typedi';
+import { ErrorHandler } from '@middlewares/ErrorHandler';
 
 @Service()
 class App {
@@ -54,6 +55,7 @@ class App {
     useContainer(this.container);
     useExpressServer(this.app, {
       controllers: [path.join(__dirname + '/controllers/**/*.controller.{j,t}s')],
+      middlewares: [ErrorHandler],
       classTransformer: false,
       validation: false,
       defaultErrorHandler: false

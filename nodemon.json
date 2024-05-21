@@ -1,5 +1,12 @@
 {
-  "watch": ["src"],
-  "ext": "ts,js,json",
-  "exec": "TS_NODE_FILES=true node -r dotenv/config -r ts-node/register -r @letsdeel/init --inspect=0.0.0.0:9230 src/server.ts"
+  "watch": [
+    "src",
+    ".env"
+  ],
+  "ext": "js,ts,json",
+  "ignore": [
+    "src/logs/*",
+    "src/**/*.{spec,test}.ts"
+  ],
+  "exec": "node -r dotenv-expand/config -r ts-node/register/transpile-only -r @letsdeel/init --inspect=0.0.0.0:9229 src/server.ts"
 }

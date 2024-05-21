@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 
 import { SourcesService } from '../services/Sources.service';
-import { Get, JsonController, QueryParams } from 'routing-controllers';
+import { Get, JsonController } from 'routing-controllers';
 import { AllSourcesDto, sourceDTO } from '../controllers/dtos/Sources.dto';
 
 @JsonController('/sources')

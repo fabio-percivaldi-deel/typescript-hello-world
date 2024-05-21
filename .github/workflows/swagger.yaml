@@ -1,0 +1,76 @@
+name: swagger
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  id-token: write
+  contents: read
+  statuses: write
+
+jobs:
+  swagger:
+    runs-on: [global-general]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install aws-cli
+        id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::221581667315:role/github-action-role
+          aws-region: eu-west-1
+      - name: Get Code Artifact token
+        id: ca-token
+        run: |
+          CA_TOKEN=$(aws codeartifact get-authorization-token --domain npm --domain-owner 974360507615 --region eu-west-1 --query authorizationToken --output text)
+          echo "CA_TOKEN=$CA_TOKEN" >> $GITHUB_OUTPUT
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.17.1
+          cache: "npm"
+      - name: Install dependencies
+        env:
+          CODEARTIFACT_AUTH_TOKEN: ${{ steps.ca-token.outputs.CA_TOKEN }}
+          SERVICE: ${{ github.event.repository.name }}
+          NODE_ENV: development
+        run: |
+          npm ci
+      - name: Generate Branches list
+        id: generate-branches
+        run: |
+          git branch -r > branches.txt
+      - name: Generate Specs list
+        id: generate-specs
+        run: |
+          npm run specs:generate
+      - name: Generate TypeScript files
+        id: generate-ts-files
+        run: |
+          npm run ts:generate
+      - name: Upload Specs List
+        run: |
+          aws s3 cp ./specs.json s3://swagger.deel.network/branches/${{ github.ref_name }}/specs.json --no-progress
+      - name: Upload Branches List
+        run: |
+          aws s3 cp ./branches.txt s3://swagger.deel.network/branches.txt --no-progress
+      - name: Upload Swagger
+        run: |
+          aws s3 sync ./swaggers s3://swagger.deel.network/swaggers/${{ github.ref_name }} --delete --no-progress --exclude "*" --include "*.json"
+      - name: Upload TypeScript files
+        run: |
+          aws s3 sync ./swaggers s3://swagger.deel.network/swaggers/${{ github.ref_name }} --delete --no-progress --exclude "*" --include "*.ts"
+      - name: Upload JS file to S3
+        run: |
+          aws s3 cp ./index.js s3://swagger.deel.network/index.js --no-progress
+      - name: Upload CSS file to S3
+        run: |
+          aws s3 cp ./index.css s3://swagger.deel.network/index.css --no-progress
+      - name: Upload Swagger html page to S3
+        run: |
+          aws s3 cp ./index.html s3://swagger.deel.network/index.html --no-progress

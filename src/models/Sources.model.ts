@@ -1,23 +1,4 @@
-import cuid from 'cuid';
-import {
-  AllowNull,
-  AutoIncrement,
-  BelongsTo,
-  BelongsToMany,
-  Column,
-  Comment,
-  CreatedAt,
-  DataType,
-  Default,
-  ForeignKey,
-  HasMany,
-  HasOne,
-  Model,
-  PrimaryKey,
-  Table,
-  Unique,
-  UpdatedAt
-} from 'sequelize-typescript';
+import { AllowNull, AutoIncrement, Column, Comment, CreatedAt, DataType, Default, Model, PrimaryKey, Table, Unique, UpdatedAt } from 'sequelize-typescript';
 import { UUIDV4 } from 'sequelize';
 
 @Table({

@@ -1,7 +1,7 @@
 // this is an internal dependency of sequelize, we need it to patch "acquire" logic
 import * as SequelizePool from 'sequelize-pool';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
-const { name: pkgName } = require('../../../package.json');
+const pkgName = 'swagger';
 import { ConnectionAcquireTimeoutError } from 'sequelize';
 import { Connection, GetConnectionOptions } from 'sequelize/types/dialects/abstract/connection-manager';
 import { Service } from 'typedi';
